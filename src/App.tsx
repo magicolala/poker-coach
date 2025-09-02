@@ -150,9 +150,9 @@ function CardButton({ code, disabled, onPick }: { code: CardCode; disabled?: boo
 function Slot({ label, value, onClear, onFocus, focused }: { label:string; value?: CardCode; onClear:()=>void; onFocus:()=>void; focused:boolean }) {
   const rank = value?.[0] as RankChar | undefined; const suit = value?.[1] as Suit | undefined;
   return (
-    <div className={`flex items-center gap-1 p-1 rounded-lg border transition-all ${focused ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/20" : "bg-gray-50 dark:bg-gray-800/50"}`} onClick={onFocus}>
+    <div className={`flex items-center gap-1 p-1 rounded-lg border border-gray-300 dark:border-gray-700 transition-all ${focused ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/20" : "bg-gray-50 dark:bg-gray-800/50"}`} onClick={onFocus}>
       <div className="w-14 text-xs text-muted-foreground">{label}</div>
-      <div className="w-10 h-10 border rounded-md flex items-center justify-center bg-white dark:bg-gray-900 shadow-inner">
+      <div className="w-10 h-10 border border-gray-300 dark:border-gray-700 rounded-md flex items-center justify-center bg-white dark:bg-gray-900 shadow-inner">
         {value ? (
           <div className="text-center">
             <div className="text-base font-bold text-gray-800 dark:text-gray-200">{rank}</div>
@@ -320,7 +320,7 @@ export default function PokerCoach() {
 
   return (
     <div className="min-h-screen w-full bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200 p-2 sm:p-4 md:p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="space-y-6">
         <header className="text-center">
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Poker Coach Pro</h1>
             <p className="text-muted-foreground mt-1">Analyse d'équité, profils adverses et aide à la décision</p>
@@ -354,7 +354,7 @@ export default function PokerCoach() {
                 <div className="space-y-2">
                     <label className="text-sm font-medium text-muted-foreground">Presets & Raccourcis</label>
                     <div className="flex flex-wrap items-center gap-2">
-                      <label className="flex items-center gap-2 text-sm p-2 rounded-md bg-gray-100 dark:bg-gray-800 border"><input type="checkbox" checked={autoClassify} onChange={e=>setAutoClassify(e.target.checked)} className="mr-2"/> Auto-classer par stats</label>
+                      <label className="flex items-center gap-2 text-sm p-2 rounded-md bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700"><input type="checkbox" checked={autoClassify} onChange={e=>setAutoClassify(e.target.checked)} className="mr-2"/> Auto-classer par stats</label>
                       <Button size="sm" variant="outline" onClick={applyPositionPreset}>Preset Positions</Button>
                       <Button size="sm" variant="outline" onClick={presetOnlineMicro}>Stats Online Micro</Button>
                       <Button size="sm" variant="outline" onClick={presetLive12}>Stats Live 1/2</Button>
@@ -371,7 +371,7 @@ export default function PokerCoach() {
                 <CardContent>
                     <div className="space-y-3">
                       {seats.map(s=> (
-                        <div key={s.id} className={`p-2 rounded-lg border transition-all ${s.id === 1 ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' : 'bg-white dark:bg-gray-800/50'}`}>
+                        <div key={s.id} className={`p-2 rounded-lg border transition-all ${s.id === 1 ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' : 'bg-white dark:bg-gray-800/50 border-gray-300 dark:border-gray-700'}`}>
                           <div className="flex flex-wrap items-center gap-2">
                             <Button onClick={()=> setSeats(prev=> prev.map(x=> x.id===s.id ? {...x, active: s.id===1 ? false : !x.active } : x))} disabled={s.id===1} variant="outline" className={`font-semibold ${s.id===1 ? "text-blue-700 dark:text-blue-300" : s.active ? "text-green-700 dark:text-green-300" : "text-gray-500"}`}>
                               {s.id===1 ? "Siège 1 (Vous)" : `Siège ${s.id} ${s.active ? "(Actif)" : "(Couché)"}`}
@@ -405,7 +405,7 @@ export default function PokerCoach() {
                             )}
                           </div>
                           {s.id!==1 && s.active && (
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-3 gap-y-2 text-xs mt-2 pt-2 border-t">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-3 gap-y-2 text-xs mt-2 pt-2 border-t border-gray-300 dark:border-gray-700">
                               <div className="flex flex-col">
                                 <StatLabel text="VPIP" tip="Voluntarily Put In Pot: % de mains jouées volontairement."/>
                                 <Input type="number" value={(stats[s.id]?.vpip ?? defaultStats.vpip)} onChange={e=> setStats(prev=> ({...prev, [s.id]: {...(prev[s.id]||defaultStats), vpip: Number(e.target.value)||0 }}))} className="h-7"/>
