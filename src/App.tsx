@@ -178,7 +178,7 @@ export default function PokerCoach() {
   const [seats, setSeats] = useState<TableSeat[]>(()=>Array.from({length:6}, (_,i)=>({id:i+1, active:i!==0, range: i===0?"any":"reg"})));
   const [dealerSeat, setDealerSeat] = useState<number>(1);
 
-  useEffect(()=>{ setSeats(prev=>{ const arr = Array.from({length: seatCount}, (_,i)=>{ const found = prev.find(s=>s.id===i+1); return found ?? { id: i+1, active:i!==0, range: i===0?"any":"reg" }; }); return arr; }); if (dealerSeat>seatCount) setDealerSeat(1); }, [seatCount]);
+  useEffect(()=>{ setSeats(prev=>{ const arr = Array.from({length: seatCount}, (_,i)=>{ const found = prev.find(s=>s.id===i+1); return found ?? { id: i+1, active:i!==0, range: (i===0?"any":"reg") as RangeStyle }; }); return arr; }); if (dealerSeat>seatCount) setDealerSeat(1); }, [seatCount]);
   useEffect(()=>{ setStats(prev=>{ const copy = { ...prev } as Record<number, SeatStats>; for (let i=1;i<=seatCount;i++) if (!copy[i]) copy[i] = { ...defaultStats }; return copy; }); }, [seatCount]);
 
   function inferStyle(s: SeatStats): RangeStyle {
@@ -442,10 +442,23 @@ export default function PokerCoach() {
                 <CardDescription>Sélectionnez vos cartes et celles du board.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="space-y-2">
-                    {slots.map(sl => (
-                      <Slot key={sl.key} label={sl.label} value={cards[sl.key]} onClear={()=>clearSlot(sl.key)} onFocus={()=>setFocus(sl.key)} focused={focus===sl.key} />
-                    ))}
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="text-sm font-medium text-muted-foreground mb-2 text-center">Votre Main</h4>
+                    <div className="flex justify-center gap-2">
+                      {slots.slice(0, 2).map(sl => (
+                        <Slot key={sl.key} label={sl.label} value={cards[sl.key]} onClear={()=>clearSlot(sl.key)} onFocus={()=>setFocus(sl.key)} focused={focus===sl.key} />
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-muted-foreground mb-2 text-center">Board</h4>
+                    <div className="flex justify-center flex-wrap gap-2">
+                      {slots.slice(2).map(sl => (
+                        <Slot key={sl.key} label={sl.label} value={cards[sl.key]} onClear={()=>clearSlot(sl.key)} onFocus={()=>setFocus(sl.key)} focused={focus===sl.key} />
+                      ))}
+                    </div>
+                  </div>
                 </div>
                 <div className="flex gap-2 pt-2">
                   <Button variant="outline" size="sm" onClick={randomizeHole}><Dice6 className="w-4 h-4 mr-2"/>Main Aléatoire</Button>
