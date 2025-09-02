@@ -4,7 +4,7 @@ Welcome to **Poker Coach Pro**, a powerful web-based tool designed to elevate yo
 
 Whether you're a seasoned player looking to refine your strategy or a newcomer eager to learn, Poker Coach Pro is your personal guide to mastering the odds.
 
-![Poker Coach Pro Screenshot](https://i.imgur.com/example.png)
+![Poker Coach Pro Screenshot](https://tinyurl.com/222eaydt)
 > **Note:** Please replace the placeholder image URL with a real screenshot of your application for a more engaging presentation.
 
 ---
