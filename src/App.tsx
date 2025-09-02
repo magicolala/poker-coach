@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Play, Square, RefreshCw, Trash2, Dice6, Info, RotateCw } from "lucide-react";
+import { DecisionPanel } from "./components/DecisionPanel";
 
 /**
  * Poker Coach – Equity, Ranges & Bluff-O-Meter (v3.4)
@@ -221,6 +222,7 @@ export default function PokerCoach() {
   const stopFlag = useRef(false);
   const [result, setResult] = useState<SimResult>({wins:0,ties:0,losses:0});
   const [equity, setEquity] = useState<number>(0);
+  const [showDecisionPanel, setShowDecisionPanel] = useState(true);
 
   function assignCard(slot: SlotKey, code: CardCode) { if (usedSet.has(code)) return; setCards(prev=>({ ...prev, [slot]: code })); const order: SlotKey[] = ["H1","H2","F1","F2","F3","T","R"]; const idx = order.indexOf(slot); setFocus(order[Math.min(idx+1, order.length-1)]); }
   function clearSlot(slot: SlotKey) { setCards(prev=>({ ...prev, [slot]: undefined })); }
@@ -494,12 +496,14 @@ export default function PokerCoach() {
                     <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{pct(bluffRateEst)}</div>
                     <p className="text-xs text-muted-foreground">Potentiel de bluff adverse basé sur le profil et le board.</p>
                 </div>
-                <Alert className={`border-2 ${recommendation.kind==="good" ? "border-green-500" : recommendation.kind==="bad" ? "border-red-500" : ""}`}>
-                  <AlertTitle className="font-bold">{recommendation.label}</AlertTitle>
-                  <AlertDescription>
-                    <span className="text-slate-600 dark:text-slate-400">{recommendation.detail}</span>
-                  </AlertDescription>
-                </Alert>
+                <div className="space-y-2 p-4 rounded-lg bg-gray-100 dark:bg-gray-800 text-center">
+                    <h3 className="font-semibold">Bluff-O-Meter</h3>
+                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{pct(bluffRateEst)}</div>
+                    <p className="text-xs text-muted-foreground">Potentiel de bluff adverse basé sur le profil et le board.</p>
+                </div>
+                <div className="flex items-center justify-center">
+                  <Button onClick={() => setShowDecisionPanel(true)}>Afficher la recommandation</Button>
+                </div>
             </CardContent>
         </Card>
 
@@ -557,6 +561,7 @@ export default function PokerCoach() {
             <p>Poker Coach Pro v3.4</p>
         </footer>
       </div>
+      {showDecisionPanel && <DecisionPanel recommendation={recommendation} onClose={() => setShowDecisionPanel(false)} />}
     </div>
   );
 }
